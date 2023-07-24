@@ -1,0 +1,34 @@
+{
+	"name": "orpheus/orpheus-composer-plugin",
+	"description": "Orpheus Composer Plugin",
+	"type": "composer-plugin",
+	"license": "MIT",
+	"keywords": [
+		"orpheus",
+		"composer",
+		"plugin"
+	],
+	"autoload": {
+		"psr-4": {
+			"Orpheus\\Composer\\": "src/"
+		}
+	},
+	"extra": {
+		"class": "Orpheus\\Composer\\OrpheusPlugin"
+	},
+	"authors": [
+		{
+			"name": "Florent HAZARD",
+			"email": "contact@sowapps.com",
+			"homepage": "http://sowapps.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"composer-plugin-api": "2.*",
+		"orpheus/orpheus-core": "4.*"
+	},
+	"require-dev": {
+		"composer/composer": "2.*"
+	}
+}

@@ -20,13 +20,13 @@
 		{
 			"name": "Florent HAZARD",
 			"email": "contact@sowapps.com",
-			"homepage": "http://sowapps.com",
+			"homepage": "https://sowapps.com",
 			"role": "Developer"
 		}
 	],
 	"require": {
 		"composer-plugin-api": "2.*",
-		"orpheus/orpheus-core": "4.*"
+		"orpheus/orpheus-core": "^4.0.0"
 	},
 	"require-dev": {
 		"composer/composer": "2.*"

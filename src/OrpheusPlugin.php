@@ -52,16 +52,34 @@ class OrpheusPlugin implements PluginInterface, EventSubscriberInterface {
 	
 	public function onPostUpdate(Event $event): void {
 		$packages = $this->getInstalledOrpheusLibraries();
+		$packages[] = $this->composer->getPackage();// Also look for root package
 		$type = self::EXTENSION_TYPE;
-		$extensions = [];
+		$extensionConfigs = [];
 		foreach( $packages as $package ) {
 			$packageExtra = $package?->getExtra();
-			$packagePluginConfig = $packageExtra[$type];
+			$packagePluginConfig = $packageExtra[$type] ?? null;
+			if( !$packagePluginConfig ) {
+				continue;
+			}
 			$extensionClass = $packagePluginConfig['class'] ?? null;
 			if( $extensionClass ) {
-				$extensions[] = $extensionClass;
+				$extensionConfigs[] = [$extensionClass, $packagePluginConfig['priority'] ?? 1];
 			}
 		}
+		// Sort extensions by priority
+		uasort($extensionConfigs, function ($a, $b) {
+			// Descending sort
+			if( $a[1] === $b[1] ) {
+				return 0;
+			}
+			
+			return $a[1] > $b[1] ? -1 : 1;
+		});
+		// Map to extension class only
+		$extensions = array_map(function ($config) {
+			return $config[0];
+		}, $extensionConfigs);
+		
 		OrpheusPhpCompiler::initialize($this->getApplicationPath() . '/store/compiler');
 		$compiler = OrpheusPhpCompiler::get();
 		$compiler->compileArray('orpheus-libraries', $extensions);
